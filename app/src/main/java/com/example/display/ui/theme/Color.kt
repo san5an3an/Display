@@ -1,9 +1,7 @@
-// 파일 경로: app/src/main/java/com/example/Display/ui/theme/Color.kt
 package com.example.display.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// 새로운 Material 3 색상 팔레트 (seed: #0069cb)
 val primaryLight = Color(0xFF0069CB)
 val onPrimaryLight = Color(0xFFFFFFFF)
 val primaryContainerLight = Color(0xFFD8E2FF)
