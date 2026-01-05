@@ -1,4 +1,4 @@
-package com.example.Display
+package com.example.display
 
 import org.junit.Test
 

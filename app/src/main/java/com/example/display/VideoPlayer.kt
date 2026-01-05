@@ -1,4 +1,4 @@
-package com.example.Display
+package com.example.display
 
 import android.Manifest
 import android.content.Intent
@@ -38,7 +38,7 @@ import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import coil.compose.rememberAsyncImagePainter
-import com.example.Display.ui.theme.DisplayTheme
+import com.example.display.ui.theme.DisplayTheme
 import kotlinx.coroutines.delay
 import java.io.File
 
@@ -68,7 +68,7 @@ fun VideoPlayer(modifier: Modifier = Modifier) {
   val appSettingsLauncher = rememberLauncherForActivityResult(
     contract = ActivityResultContracts.StartActivityForResult(),
     onResult = {
-      Log.d("Settings", "설정 화면에서 돌아왔습니다.")
+      Log.d("Settings", "설정 화면실행.")
     }
   )
 
@@ -86,10 +86,10 @@ fun VideoPlayer(modifier: Modifier = Modifier) {
         }
         if (isPermanentlyDenied) {
           showSettingsDialog = true
-          Log.w("Permission", "권한이 영구적으로 거부되었습니다. 설정으로 이동해야 합니다.")
+          Log.w("Permission", "Permissions Denied.")
         } else {
           showSettingsDialog = false
-          Log.w("Permission", "권한이 임시 거부되었습니다.")
+          Log.w("Permission", "Permissions Temporary Denied.")
         }
       }
     }
@@ -137,7 +137,7 @@ fun VideoPlayer(modifier: Modifier = Modifier) {
         Log.d("Playlist", "Loaded ${loadedPlaylist.size} items.")
       } else {
         playlist = emptyList()
-        Log.w("Playlist", "${appDirectory.path} 폴더가 비어있습니다.")
+        Log.w("Playlist", "${appDirectory.path} Empty.")
       }
     }
   }
@@ -162,7 +162,7 @@ fun VideoPlayer(modifier: Modifier = Modifier) {
         try {
           appSettingsLauncher.launch(intent)
         } catch (e: Exception) {
-          Log.e("SettingsIntent", "특정 권한 설정 이동 실패. 대체 인텐트 실행.", e)
+          Log.e("SettingsIntent", "Failed to move specific permission settings. Executing a replacement intent.", e)
           val fallbackIntent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
             data = Uri.fromParts("package", context.packageName, null)
           }

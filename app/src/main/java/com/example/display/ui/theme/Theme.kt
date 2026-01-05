@@ -1,5 +1,5 @@
 // 파일 경로: app/src/main/java/com/example/Display/ui/theme/Theme.kt
-package com.example.Display.ui.theme
+package com.example.display.ui.theme
 
 import android.app.Activity
 import android.os.Build

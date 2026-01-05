@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-  namespace = "com.example.Display"
+  namespace = "com.example.display"
   compileSdk = 36
 
   defaultConfig {
