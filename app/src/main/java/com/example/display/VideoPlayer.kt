@@ -1,4 +1,4 @@
-package com.example.Display
+package com.example.display
 
 import android.Manifest
 import android.content.Intent
@@ -38,7 +38,7 @@ import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import coil.compose.rememberAsyncImagePainter
-import com.example.Display.ui.theme.DisplayTheme
+import com.example.display.ui.theme.DisplayTheme
 import kotlinx.coroutines.delay
 import java.io.File
 
@@ -68,7 +68,7 @@ fun VideoPlayer(modifier: Modifier = Modifier) {
   val appSettingsLauncher = rememberLauncherForActivityResult(
     contract = ActivityResultContracts.StartActivityForResult(),
     onResult = {
-      Log.d("Settings", "설정 화면에서 돌아왔습니다.")
+      Log.d("Settings", "설정 화면실행.")
     }
   )
 
@@ -86,16 +86,19 @@ fun VideoPlayer(modifier: Modifier = Modifier) {
         }
         if (isPermanentlyDenied) {
           showSettingsDialog = true
-          Log.w("Permission", "권한이 영구적으로 거부되었습니다. 설정으로 이동해야 합니다.")
+          Log.w("Permission", "Permissions Denied.")
         } else {
           showSettingsDialog = false
-          Log.w("Permission", "권한이 임시 거부되었습니다.")
+          Log.w("Permission", "Permissions Temporary Denied.")
         }
       }
     }
   )
 
-  val appDirectory = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES), APP_FOLDER_NAME)
+  val appDirectory = File(
+    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES),
+    APP_FOLDER_NAME
+  )
   if (!appDirectory.exists()) {
     appDirectory.mkdirs()
   }
@@ -137,7 +140,7 @@ fun VideoPlayer(modifier: Modifier = Modifier) {
         Log.d("Playlist", "Loaded ${loadedPlaylist.size} items.")
       } else {
         playlist = emptyList()
-        Log.w("Playlist", "${appDirectory.path} 폴더가 비어있습니다.")
+        Log.w("Playlist", "${appDirectory.path} Empty.")
       }
     }
   }
@@ -153,16 +156,26 @@ fun VideoPlayer(modifier: Modifier = Modifier) {
           // 안드로이드 버전에 따라 정확한 권한 그룹 이름을 지정
           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             // 안드로이드 13 이상은 'Photos and Videos' 권한 그룹
-            putExtra("android.provider.extra.PERMISSION_GROUP_NAME", Manifest.permission_group.READ_MEDIA_VISUAL) // <- 정확한 값으로 수정
+            putExtra(
+              "android.provider.extra.PERMISSION_GROUP_NAME",
+              Manifest.permission_group.READ_MEDIA_VISUAL
+            ) // <- 정확한 값으로 수정
           } else {
             // 그 이전 버전은 'Storage' 권한 그룹
-            putExtra("android.provider.extra.PERMISSION_GROUP_NAME", Manifest.permission_group.STORAGE)
+            putExtra(
+              "android.provider.extra.PERMISSION_GROUP_NAME",
+              Manifest.permission_group.STORAGE
+            )
           }
         }
         try {
           appSettingsLauncher.launch(intent)
         } catch (e: Exception) {
-          Log.e("SettingsIntent", "특정 권한 설정 이동 실패. 대체 인텐트 실행.", e)
+          Log.e(
+            "SettingsIntent",
+            "Failed to move specific permission settings. Executing a replacement intent.",
+            e
+          )
           val fallbackIntent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
             data = Uri.fromParts("package", context.packageName, null)
           }
@@ -192,6 +205,7 @@ fun VideoPlayer(modifier: Modifier = Modifier) {
             playNext()
           }
         }
+
         ContentType.VIDEO -> {
           val exoPlayer = remember { ExoPlayer.Builder(context).build() }
           DisposableEffect(key1 = currentContentIndex) {
@@ -213,7 +227,12 @@ fun VideoPlayer(modifier: Modifier = Modifier) {
             }
           }
           AndroidView(
-            factory = { PlayerView(it).apply { player = exoPlayer } },
+            factory = {
+              PlayerView(it).apply {
+                player = exoPlayer
+                useController = false
+              }
+            },
             modifier = Modifier.fillMaxSize()
           )
         }
@@ -244,14 +263,21 @@ fun SettingsDialog(onDismiss: () -> Unit, onConfirm: () -> Unit) {
 
 @Composable
 fun EmptyPlaylistUI(modifier: Modifier = Modifier, folderPath: String) {
-  Box(modifier = modifier
-    .fillMaxSize()
-    .padding(16.dp), contentAlignment = Alignment.Center) {
+  Box(
+    modifier = modifier
+      .fillMaxSize()
+      .padding(16.dp), contentAlignment = Alignment.Center
+  ) {
     Column(
       horizontalAlignment = Alignment.CenterHorizontally,
       verticalArrangement = Arrangement.Center
     ) {
-      Icon(Icons.Rounded.VideocamOff, "콘텐츠 없음", Modifier.size(48.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
+      Icon(
+        Icons.Rounded.VideocamOff,
+        "콘텐츠 없음",
+        Modifier.size(48.dp),
+        tint = MaterialTheme.colorScheme.onSurfaceVariant
+      )
       Spacer(modifier = Modifier.height(16.dp))
       Text("재생할 콘텐츠가 없어요", style = MaterialTheme.typography.titleMedium)
       Spacer(modifier = Modifier.height(8.dp))
@@ -267,14 +293,21 @@ fun EmptyPlaylistUI(modifier: Modifier = Modifier, folderPath: String) {
 
 @Composable
 fun PermissionRequestUI(modifier: Modifier = Modifier, folderPath: String) {
-  Box(modifier = modifier
-    .fillMaxSize()
-    .padding(16.dp), contentAlignment = Alignment.Center) {
+  Box(
+    modifier = modifier
+      .fillMaxSize()
+      .padding(16.dp), contentAlignment = Alignment.Center
+  ) {
     Column(
       horizontalAlignment = Alignment.CenterHorizontally,
       verticalArrangement = Arrangement.Center
     ) {
-      Icon(Icons.Rounded.SdCard, "권한 필요", Modifier.size(48.dp), tint = MaterialTheme.colorScheme.error)
+      Icon(
+        Icons.Rounded.SdCard,
+        "권한 필요",
+        Modifier.size(48.dp),
+        tint = MaterialTheme.colorScheme.error
+      )
       Spacer(modifier = Modifier.height(16.dp))
       Text("저장소 접근 권한이 필요해요", style = MaterialTheme.typography.titleMedium)
       Spacer(modifier = Modifier.height(8.dp))
@@ -292,7 +325,7 @@ fun PermissionRequestUI(modifier: Modifier = Modifier, folderPath: String) {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-  DisplayTheme (dynamicColor = false) {
+  DisplayTheme(dynamicColor = false) {
     EmptyPlaylistUI(folderPath = "/storage/emulated/0/Movies/Display")
   }
 }

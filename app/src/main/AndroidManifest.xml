@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.Display">
+    package="com.example.display">
 
     <!-- 안드로이드 13 이상에서 필요한 권한 -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
@@ -26,7 +26,7 @@
         <activity
             android:exported="true"
             android:theme="@style/Theme.Display"
-            android:name="com.example.Display.MainActivity">
+            android:name="com.example.display.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

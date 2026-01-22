@@ -1,7 +1,6 @@
-// 파일 경로: app/src/main/java/com/example/Display/ui/theme/Theme.kt
-package com.example.Display.ui.theme
+package com.example.display.ui.theme
 
-import android.app.Activity
+//import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -10,11 +9,10 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.toArgb
+//import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
-import androidx.core.view.WindowCompat
+//import androidx.compose.ui.platform.LocalView
+//import androidx.core.view.WindowCompat
 
 // LightColorScheme에 새로운 색상들을 연결합니다.
 private val LightColorScheme = lightColorScheme(
@@ -98,14 +96,16 @@ fun DisplayTheme(
     darkTheme -> DarkColorScheme
     else -> LightColorScheme
   }
-  val view = LocalView.current
-  if (!view.isInEditMode) {
-    SideEffect {
-      val window = (view.context as Activity).window
-      window.statusBarColor = colorScheme.primary.toArgb()
-      WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
-    }
-  }
+//  val view = LocalView.current
+//  if (!view.isInEditMode) {
+//    SideEffect {
+//      val window = (view.context as Activity).window
+//      window.statusBarColor = colorScheme.primary.toArgb()
+//      window.statusBarColor = android.graphics.Color.TRANSPARENT
+//      WindowCompat.setDecorFitsSystemWindows(window, false)
+//      WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+//    }
+//  }
 
   MaterialTheme(
     colorScheme = colorScheme,
